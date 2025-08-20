@@ -3,8 +3,8 @@ package calculator
 import ai.koog.agents.core.agent.AIAgent
 import ai.koog.prompt.executor.llms.all.simpleOllamaAIExecutor
 import calculator.CalculatorCallbacks.calculatorCallbacks
-import calculator.CalculatorCommon.toolRegistry
 import calculator.CalculatorConfigs.ollamaAgentConfig
+import calculator.CalculatorToolRegistry.toolRegistry
 import kotlinx.coroutines.runBlocking
 
 fun main(): Unit = runBlocking {

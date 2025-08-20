@@ -5,7 +5,7 @@ import ai.koog.agents.core.tools.reflect.asTools
 import ai.koog.agents.ext.tool.AskUser
 import ai.koog.agents.ext.tool.SayToUser
 
-object CalculatorCommon {
+object CalculatorToolRegistry {
   // Create a tool registry with calculator tools
   val toolRegistry = ToolRegistry {
     // Special tools, required with this type of agent.

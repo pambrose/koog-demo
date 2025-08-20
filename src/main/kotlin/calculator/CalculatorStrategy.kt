@@ -11,6 +11,7 @@ import ai.koog.agents.core.dsl.extension.onMultipleToolCalls
 import ai.koog.agents.core.environment.ReceivedToolResult
 import io.github.oshai.kotlinlogging.KotlinLogging
 
+
 object CalculatorStrategy {
   internal val logger = KotlinLogging.logger {}
   private const val MAX_TOKENS_THRESHOLD = 1000
@@ -21,12 +22,13 @@ object CalculatorStrategy {
     val compressHistoryLLMNode by nodeLLMCompressHistory<List<ReceivedToolResult>>()
     val receiveMultipleToolResultsLLMNode by nodeLLMSendMultipleToolResults()
 
+
     edge(nodeStart forwardTo initialLLMNode)
 
     edge(
-      (initialLLMNode forwardTo nodeFinish)
+      initialLLMNode
+          forwardTo nodeFinish
           transformed { resp -> resp.first() }
-
           onAssistantMessage { assistant ->
         logger.info { "initialLLMNode -> nodeFinish: assistant message: ${assistant}" }
         true
@@ -34,7 +36,8 @@ object CalculatorStrategy {
     )
 
     edge(
-      (initialLLMNode forwardTo executeMultipleToolsNode)
+      initialLLMNode
+          forwardTo executeMultipleToolsNode
           onMultipleToolCalls {
         logger.info { "initialLLMNode -> executeMultipleToolsNode with tool calls: ${it}" }
         true
@@ -42,7 +45,8 @@ object CalculatorStrategy {
     )
 
     edge(
-      (executeMultipleToolsNode forwardTo compressHistoryLLMNode)
+      executeMultipleToolsNode
+          forwardTo compressHistoryLLMNode
           onCondition {
         llm.readSession {
           logger.info { "executeMultipleToolsNode -> compressHistoryLLMNode transition: token usage: ${prompt.latestTokenUsage}" }
@@ -54,7 +58,8 @@ object CalculatorStrategy {
     edge(compressHistoryLLMNode forwardTo receiveMultipleToolResultsLLMNode)
 
     edge(
-      (executeMultipleToolsNode forwardTo receiveMultipleToolResultsLLMNode)
+      executeMultipleToolsNode
+          forwardTo receiveMultipleToolResultsLLMNode
           onCondition {
         llm.readSession {
           logger.info { "executeMultipleToolsNode -> receiveMultipleToolResultsLLMNode transition with tool calls: ${it}" }
@@ -64,7 +69,8 @@ object CalculatorStrategy {
     )
 
     edge(
-      (receiveMultipleToolResultsLLMNode forwardTo executeMultipleToolsNode)
+      receiveMultipleToolResultsLLMNode
+          forwardTo executeMultipleToolsNode
           onMultipleToolCalls {
         logger.info { "receiveMultipleToolResultsLLMNode -> executeMultipleToolsNode with tool calls: ${it}" }
         true
@@ -72,7 +78,8 @@ object CalculatorStrategy {
     )
 
     edge(
-      (receiveMultipleToolResultsLLMNode forwardTo nodeFinish)
+      receiveMultipleToolResultsLLMNode
+          forwardTo nodeFinish
           transformed { responses ->
         logger.info { "\nreceiveMultipleToolResultsLLMNode -> nodeFinish output: \n${responses.joinToString("\n") { "[${it.content}]" }}" }
         logger.info { "\nreceiveMultipleToolResultsLLMNode -> nodeFinish output: \n${responses.first()}" }

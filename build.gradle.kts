@@ -1,5 +1,6 @@
 plugins {
-  kotlin("jvm") version "2.2.0"
+  kotlin("jvm") version "2.2.10"
+  alias(libs.plugins.kotlin.serialization)
 }
 
 group = "com.github.pambrose.common-utils"

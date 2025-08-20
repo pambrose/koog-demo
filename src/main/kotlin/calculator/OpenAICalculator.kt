@@ -3,8 +3,8 @@ package calculator
 import ai.koog.agents.core.agent.AIAgent
 import ai.koog.prompt.executor.llms.all.simpleOpenAIExecutor
 import calculator.CalculatorCallbacks.calculatorCallbacks
-import calculator.CalculatorCommon.toolRegistry
 import calculator.CalculatorConfigs.openAIAgentConfig
+import calculator.CalculatorToolRegistry.toolRegistry
 import com.github.pambrose.common.ApiKeyService
 import kotlinx.coroutines.runBlocking
 

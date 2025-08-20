@@ -1,4 +1,4 @@
-# Workflow Strategy Diagram
+# Calculator Strategy Diagram
 
 ```mermaid
 graph TD
